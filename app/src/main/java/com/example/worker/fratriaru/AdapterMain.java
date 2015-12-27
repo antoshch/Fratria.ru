@@ -24,7 +24,7 @@ public class AdapterMain extends RecyclerView.Adapter<AdapterMain.ViewHolder> {
     private ArrayList<ClassItem> data;
     private AQuery aq;
     private Activity activity;
-    private DateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm", Locale.getDefault());
+    private DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy" + " в " + "HH:mm", Locale.getDefault());
 
     public AdapterMain(Activity activity, ArrayList<ClassItem> data) {
         this.activity = activity;

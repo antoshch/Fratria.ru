@@ -8,33 +8,33 @@ import android.webkit.WebViewClient;
 
 public class DescriptionActivity extends Activity {
 
-    private WebView mWebView;
+    private WebView webView;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_description);
 
-        mWebView = (WebView) findViewById(R.id.webView);
+        webView = (WebView) findViewById(R.id.webView);
         // включаем поддержку JavaScript
-        mWebView.getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().setJavaScriptEnabled(true);
         // указываем страницу загрузки
         Uri url = getIntent().getData();
-        mWebView.loadUrl(url.toString());
+        webView.loadUrl(url.toString());
 
 //      Определим экземпляр MyWebViewClient
-        mWebView.setWebViewClient(new MyWebViewClient());
+        webView.setWebViewClient(new MyWebViewClient());
 
 //      Добавляем увеличение без кнопок через мультитач
-        mWebView.getSettings().setBuiltInZoomControls(true);
-        mWebView.getSettings().setDisplayZoomControls(false);
+        webView.getSettings().setBuiltInZoomControls(true);
+        webView.getSettings().setDisplayZoomControls(false);
 
     }
 
     @Override
     public void onBackPressed (){
 
-        if (mWebView.isFocused() && mWebView.canGoBack()) {
-            mWebView.goBack();
+        if (webView.isFocused() && webView.canGoBack()) {
+            webView.goBack();
 
         }else{
             super.onBackPressed();
