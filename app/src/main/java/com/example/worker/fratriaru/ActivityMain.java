@@ -1,11 +1,14 @@
 package com.example.worker.fratriaru;
 
 import android.app.Activity;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.androidquery.AQuery;
@@ -13,6 +16,12 @@ import com.androidquery.callback.AjaxStatus;
 import com.androidquery.util.AQUtility;
 import com.androidquery.util.XmlDom;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+
+import java.io.IOException;
+import java.net.URI;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,7 +41,7 @@ public class ActivityMain extends Activity implements SwipeRefreshLayout.OnRefre
     private SwipeRefreshLayout swipeRefreshLayout;
     private ArrayList<ClassItem> items = new ArrayList<ClassItem>();
 
-    private final String[] FEEDS = new String[]{"http://fratria.ru/rss/"};
+    private final String url = "http://fratria.ru/rss";
     private DateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zz", Locale.ENGLISH);
 
     @Override
@@ -46,7 +55,6 @@ public class ActivityMain extends Activity implements SwipeRefreshLayout.OnRefre
         swipeRefreshLayout = new SwipeRefreshLayout(activity);
         swipeRefreshLayout.setOnRefreshListener(this);
 
-
         gridView = new RecyclerView(activity);
         gridView.setHasFixedSize(true);
         mLayoutManager = new StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.VERTICAL);
@@ -59,23 +67,17 @@ public class ActivityMain extends Activity implements SwipeRefreshLayout.OnRefre
         adapter = new AdapterMain(activity,items);
         gridView.setAdapter(adapter);
 
-        getFeeds();
+        request(url);
 
-    }
-
-    public void getFeeds() {
-        items.clear();
-        for(String feed:FEEDS){
-            request(feed);
-        }
-    }
+     }
 
     public void request(String url) {
+        items.clear();
         aq.ajax(url, XmlDom.class, this, "onRequest");
         swipeRefreshLayout.setRefreshing(true);
     }
 
-    public void onRequest(String url,XmlDom xml, AjaxStatus status) {
+         public void onRequest(String url,XmlDom xml, AjaxStatus status) {
         if (status.getCode()==200) {
             String logo = "";
             try {
@@ -85,13 +87,13 @@ public class ActivityMain extends Activity implements SwipeRefreshLayout.OnRefre
                 e.printStackTrace();
             }
 
-            List<XmlDom> xmlItems = xml.tags("item");
+            List<XmlDom> entries = xml.tags("item");
 
-            for(XmlDom xmlItem: xmlItems){
+            for(XmlDom entry: entries){
                 ClassItem item = new ClassItem();
 
                 // Получаем описание
-                String description = xmlItem.tag("description").text();
+                String description = entry.tag("description").text();
                 item.setDescription(description);
 
                 //Получаем лого
@@ -99,19 +101,26 @@ public class ActivityMain extends Activity implements SwipeRefreshLayout.OnRefre
 
                 // Получаем автора
                 try {
-                    item.setAuthor(xmlItem.tag("author").text());
+                    String author = entry.tag("author").text();
+                    author = author.substring(author.indexOf("(") + 1, author.indexOf(")"));
+                    item.setAuthor(author);
                 }
                 catch (Exception e) {
                 }
 
                 //Получаем заголовки
-                item.setTitle(xmlItem.tag("title").text());
+                item.setTitle(entry.tag("title").text());
+
+                //Получаем категорию
+                String category = entry.tag("category").text();
+                category = category.toUpperCase();
+                item.setCategories(category);
 
                 // Получаем ссылку
-                item.setLink(xmlItem.tag("link").text());
+                item.setLink(entry.tag("link").text());
 
                 //Получаем дату публикации
-                String pubDate = xmlItem.tag("pubDate").text();
+                String pubDate = entry.tag("pubDate").text();
                 Date date = new Date();
                 try {
                     date = formatter.parse(pubDate);
@@ -122,20 +131,17 @@ public class ActivityMain extends Activity implements SwipeRefreshLayout.OnRefre
                 item.setDate(date);
 
                 //Получаем изображение
-                String src = "";
+                String imageUrl = null;
 
                 try {
-
-                    src = new XmlDom(xmlItem.toString()).tag("enclosure").attr("url");
-                    if (src.startsWith("//") ) {
-                        src = "http:"+src;
-                    }
-                } catch (Exception e) {
+                    imageUrl = entry.tag("enclosure").attr("url");
+                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                item.setImg(imageUrl);
 
-                item.setImg(src);
-
+                String videoUrl = "https://www.youtube.com/embed/aG8ar9NkdTA";
+                item.setVideo(videoUrl);
 
                 //
                 items.add(item);
@@ -160,7 +166,7 @@ public class ActivityMain extends Activity implements SwipeRefreshLayout.OnRefre
         if (back_pressed + 2000 > System.currentTimeMillis())
             super.onBackPressed();
         else
-            Toast.makeText(getBaseContext(), "Нажмите Назад еще раз, чтоюы выйти из приложения",
+            Toast.makeText(getApplicationContext(), R.string.back_message,
                     Toast.LENGTH_SHORT).show();
         back_pressed = System.currentTimeMillis();
     }
@@ -181,6 +187,6 @@ public class ActivityMain extends Activity implements SwipeRefreshLayout.OnRefre
 
     @Override
     public void onRefresh() {
-        getFeeds();
+        request(url);
     }
 }

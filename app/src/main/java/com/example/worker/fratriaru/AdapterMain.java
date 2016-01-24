@@ -9,8 +9,10 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import com.androidquery.AQuery;
 
@@ -39,6 +41,9 @@ public class AdapterMain extends RecyclerView.Adapter<AdapterMain.ViewHolder> {
         private TextView siteurl;
         private TextView userFullname;
         private TextView articleTitle;
+        private TextView category;
+        private at.markushi.ui.CircleButton share;
+
         public ViewHolder(View holderView) {
             super(holderView);
             cardView = (CardView) holderView.findViewById(R.id.card_view);
@@ -47,6 +52,8 @@ public class AdapterMain extends RecyclerView.Adapter<AdapterMain.ViewHolder> {
             siteurl = (TextView) holderView.findViewById(R.id.siteurl);
             userFullname = (TextView) holderView.findViewById(R.id.userFullname);
             articleTitle = (TextView) holderView.findViewById(R.id.articleTitle);
+            category = (TextView) holderView.findViewById(R.id.category);
+            share = (at.markushi.ui.CircleButton) holderView.findViewById(R.id.button0);
         }
     }
 
@@ -63,8 +70,10 @@ public class AdapterMain extends RecyclerView.Adapter<AdapterMain.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
+
         ClassItem item = data.get(i);
         aq.id(viewHolder.articleTitle).text(item.getTitle());
+        aq.id(viewHolder.category).text(item.getCategories());
         aq.id(viewHolder.siteurl).text(item.getLink());
         aq.id(viewHolder.userAva).image(item.getLogo());
         String author = ""+item.getAuthor();
@@ -102,10 +111,20 @@ public class AdapterMain extends RecyclerView.Adapter<AdapterMain.ViewHolder> {
                     Intent i = new Intent(activity, DescriptionActivity.class);
                     i.setData(Uri.parse(url));
                     activity.startActivity(i);
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
+        });
+
+        aq.id(viewHolder.share).clicked(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, url);
+                sendIntent.setType("text/plain");
+                activity.startActivity(Intent.createChooser(sendIntent,  "Поделиться через:"));
             }
         });
     }

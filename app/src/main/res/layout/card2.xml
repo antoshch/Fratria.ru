@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+<android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="400dp"
     card_view:cardCornerRadius="4dp"
-    card_view:cardElevation="4dp"
-    >
+    card_view:cardElevation="4dp">
 
     <RelativeLayout
         android:id="@+id/articleLayout"
@@ -17,14 +15,13 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/stgvImageView"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:scaleType="centerCrop"/>
+            android:scaleType="centerCrop"
+            android:id="@+id/stgvImageView" />
 
         <TextView
-            android:id="@+id/siteurl"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/stgvImageView"
@@ -33,32 +30,32 @@
             android:layout_alignBottom="@+id/stgvImageView"
             android:layout_alignTop="@+id/stgvImageView"
             android:textColor="@color/white"
+
             android:textSize="20dp"
+            android:id="@+id/siteurl"
             android:visibility="gone"
             android:clickable="false" />
 
-        <LinearLayout
-            android:id="@+id/footer"
-            android:layout_width="match_parent"
+        <LinearLayout android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/stgvImageView"
+            android:id="@+id/footer"
             android:orientation="vertical">
 
-            <TextView
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:id="@+id/articleTitle"
-                android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:textAppearance="@android:style/TextAppearance.Medium"
                 android:textColor="@drawable/main_adapter_textselector"
                 android:textStyle="bold"
                 android:textSize="20sp"
                 android:fontFamily="sans-serif-medium"
+                android:paddingBottom="4dp"
                 android:paddingRight="16dp"
                 android:paddingTop="16dp"
                 android:paddingLeft="16dp" />
 
-            <TextView
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:id="@+id/category"
-                android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:textColor="#838383"
                 android:textSize="14sp"
                 android:autoText="false"
@@ -66,14 +63,13 @@
                 android:textIsSelectable="false"
                 android:paddingRight="16dp"
                 android:paddingLeft="16dp"
-                android:paddingTop="8dp" />
+                android:paddingBottom="16dp" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
+            <RelativeLayout android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="16dp"
-                android:paddingRight="8dp"
-                android:paddingBottom="16dp">
+                android:paddingRight="16dp"
+                android:layout_marginBottom="24dp">
 
                 <LinearLayout
                     android:id="@+id/authorLayout"
@@ -91,8 +87,7 @@
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_gravity="center_vertical"
-                        android:background="#f8f8f8"
-                        android:layout_marginRight="8dp" />
+                        android:background="#f8f8f8" />
 
                     <TextView
                         android:id="@+id/userFullname"
@@ -107,29 +102,34 @@
                 </LinearLayout>
 
                 <!--<at.markushi.ui.CircleButton-->
-                    <!--android:id="@+id/comments"-->
-                    <!--android:layout_width="@android:dimen/app_icon_size"-->
-                    <!--android:layout_height="@android:dimen/app_icon_size"-->
-                    <!--android:src="@drawable/ic_insert_comment"-->
-                    <!--app:cb_color="@color/primary_bgr"-->
-                    <!--android:clickable="true"-->
-                    <!--android:layout_alignWithParentIfMissing="false"-->
-                    <!--android:layout_centerVertical="true"-->
-                    <!--android:layout_toLeftOf="@+id/button0"-->
-                    <!--android:layout_toStartOf="@+id/button0" />-->
+                <!--android:id="@+id/button0"-->
+                <!--android:layout_width="@android:dimen/app_icon_size"-->
+                <!--android:layout_height="@android:dimen/app_icon_size"-->
+                <!--android:src="@drawable/ic_favorite"-->
+                <!--app:cb_color="@color/primary_bgr"-->
+                    <!--android:layout_alignParentTop="true"-->
+                    <!--android:layout_toLeftOf="@+id/button2"-->
+                    <!--android:layout_toStartOf="@+id/button2" />-->
 
                 <at.markushi.ui.CircleButton
-                    android:id="@+id/button0"
+                    android:id="@+id/button1"
                     android:layout_width="@android:dimen/app_icon_size"
                     android:layout_height="@android:dimen/app_icon_size"
                     android:src="@drawable/ic_share"
                     app:cb_color="@color/primary_bgr"
-                    android:clickable="true"
-                    android:layout_alignWithParentIfMissing="false"
-                    android:layout_centerVertical="true"
+                    android:layout_alignParentTop="true"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true" />
 
+                <!--<at.markushi.ui.CircleButton-->
+                    <!--android:id="@+id/button2"-->
+                    <!--android:layout_width="@android:dimen/app_icon_size"-->
+                    <!--android:layout_height="@android:dimen/app_icon_size"-->
+                    <!--android:src="@drawable/ic_insert_comment"-->
+                    <!--app:cb_color="@color/primary_bgr"-->
+                    <!--android:layout_alignTop="@+id/authorLayout"-->
+                    <!--android:layout_alignParentRight="true"-->
+                    <!--android:layout_alignParentEnd="true" />-->
 
             </RelativeLayout>
 

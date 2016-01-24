@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Fratria.ru</string>
+    <string name="back_message">Нажмите Назад еще раз, чтоюы выйти из приложения</string>
 </resources>

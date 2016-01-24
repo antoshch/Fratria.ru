@@ -8,10 +8,11 @@ public class ClassItem {
     private String title;
     private String link;
     private String description;
-    private Date date;
     private String author;
-    private ArrayList<String> categories;
+    private String category;
+    private Date pubDate;
     private String img;
+    private String video;
 
     public String getLogo() {
         return logo;
@@ -46,11 +47,11 @@ public class ClassItem {
     }
 
     public Date getDate() {
-        return date;
+        return pubDate;
     }
 
     public void setDate(Date date) {
-        this.date = date;
+        this.pubDate = date;
     }
 
     public String getAuthor() {
@@ -61,12 +62,12 @@ public class ClassItem {
         this.author = author;
     }
 
-    public ArrayList<String> getCategories() {
-        return categories;
+    public String getCategories() {
+        return category;
     }
 
-    public void setCategories(ArrayList<String> categories) {
-        this.categories = categories;
+    public void setCategories(String category) {
+        this.category = category;
     }
 
     public String getImg() {
@@ -75,5 +76,13 @@ public class ClassItem {
 
     public void setImg(String img) {
         this.img = img;
+    }
+
+    public String getVideo() {
+        return video;
+    }
+
+    public void setVideo(String video) {
+        this.video = video;
     }
 }
