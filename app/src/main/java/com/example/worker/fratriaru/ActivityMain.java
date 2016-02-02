@@ -1,14 +1,12 @@
 package com.example.worker.fratriaru;
 
 import android.app.Activity;
-import android.net.Uri;
-import android.os.AsyncTask;
+
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.androidquery.AQuery;
@@ -16,12 +14,6 @@ import com.androidquery.callback.AjaxStatus;
 import com.androidquery.util.AQUtility;
 import com.androidquery.util.XmlDom;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
-
-import java.io.IOException;
-import java.net.URI;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -68,8 +60,7 @@ public class ActivityMain extends Activity implements SwipeRefreshLayout.OnRefre
         gridView.setAdapter(adapter);
 
         request(url);
-
-     }
+    }
 
     public void request(String url) {
         items.clear();
@@ -77,26 +68,26 @@ public class ActivityMain extends Activity implements SwipeRefreshLayout.OnRefre
         swipeRefreshLayout.setRefreshing(true);
     }
 
-         public void onRequest(String url,XmlDom xml, AjaxStatus status) {
+        public void onRequest(String url,XmlDom xml, AjaxStatus status) {
         if (status.getCode()==200) {
-            String logo = "";
-            try {
-                logo = xml.tags("url").get(0).text();
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
 
             List<XmlDom> entries = xml.tags("item");
 
             for(XmlDom entry: entries){
                 ClassItem item = new ClassItem();
 
-                // Получаем описание
+//                // Получаем описание
                 String description = entry.tag("description").text();
                 item.setDescription(description);
 
-                //Получаем лого
+                //Получаем аватарку
+                String logo = "";
+                try {
+                    logo = xml.tags("url").get(0).text();
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
                 item.setLogo(logo);
 
                 // Получаем автора
@@ -126,7 +117,7 @@ public class ActivityMain extends Activity implements SwipeRefreshLayout.OnRefre
                     date = formatter.parse(pubDate);
                 }
                 catch (Exception e) {
-                    AQUtility.debug("errorParsingDate",e.toString());
+                    AQUtility.debug("errorParsingDate", e.toString());
                 }
                 item.setDate(date);
 
@@ -138,14 +129,39 @@ public class ActivityMain extends Activity implements SwipeRefreshLayout.OnRefre
                  } catch (Exception e) {
                     e.printStackTrace();
                 }
-                item.setImg(imageUrl);
 
-                String videoUrl = "https://www.youtube.com/embed/aG8ar9NkdTA";
-                item.setVideo(videoUrl);
+                //Получаем изображение
+                String videoUrl = "";
 
-                //
+                try {
+                videoUrl = new XmlDom("<xml>"+description+"</xml>").tag("iframe").attr("src");
+                if (videoUrl.startsWith("//") ) {
+                    videoUrl = "http:"+videoUrl;
+                }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+                String youtubeVideo = null;
+                if (videoUrl.contains("youtube") && videoUrl.contains("embed/")) {
+                    try {
+                        youtubeVideo = videoUrl.substring(videoUrl.indexOf("embed/") + 6);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                if (imageUrl!=null) {
+                    item.setImg(imageUrl);
+                }
+                else {
+                    item.setImg("http://img.youtube.com/vi/" + youtubeVideo + "/0.jpg");
+                }
+
                 items.add(item);
             }
+
             Collections.sort(items, new Comparator<ClassItem>() {
                 public int compare(ClassItem o1, ClassItem o2) {
                     if (o1.getDate() == null || o2.getDate() == null)

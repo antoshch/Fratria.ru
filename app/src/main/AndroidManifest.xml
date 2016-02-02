@@ -14,12 +14,13 @@
         <activity android:name=".ActivityMain">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DescriptionActivity" />
-        <activity android:name=".SecondActivity"></activity>
+        <activity android:name=".descriptionAxtivityWebwiev.DescriptionActivity"
+            android:configChanges="orientation|screenSize"
+            android:hardwareAccelerated="true"/>
+        <activity android:name=".descriptionAxtivity.SecondActivity"></activity>
     </application>
 
 </manifest>

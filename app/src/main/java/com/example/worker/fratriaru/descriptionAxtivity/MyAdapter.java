@@ -1,19 +1,21 @@
-package com.example.worker.fratriaru;
+package com.example.worker.fratriaru.descriptionAxtivity;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.example.worker.fratriaru.R;
+import com.example.worker.fratriaru.descriptionAxtivity.Item;
+
 import java.util.ArrayList;
 
 public class MyAdapter extends BaseAdapter {
 
     ArrayList<Item> data = new ArrayList<Item>();
+
     Context context;
 
     public MyAdapter(Context context, ArrayList<Item> arr) {
@@ -42,6 +44,7 @@ public class MyAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View someView, ViewGroup arg2) {
+
         //Получение объекта inflater из контекста
         LayoutInflater inflater = LayoutInflater.from(context);
         //Если someView (View из ListView) вдруг оказался равен
@@ -52,12 +55,12 @@ public class MyAdapter extends BaseAdapter {
         //Обявляем наши текствьюшки и связываем их с разметкой
         TextView header = (TextView) someView.findViewById(R.id.item_headerText);
         TextView subHeader = (TextView) someView.findViewById(R.id.item_subHeaderText);
-        TextView comments = (TextView) someView.findViewById(R.id.item_comments);
 
         //Устанавливаем в каждую текствьюшку соответствующий текст
         // сначала заголовок
-        header.setText(data.get(i).header);
-
+        header.setText(data.get(i).getHeader());
+        // потом подзаголовок
+        subHeader.setText(data.get(i).getDescription());
         return someView;
     }
 

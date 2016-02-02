@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.androidquery.AQuery;
+import com.example.worker.fratriaru.descriptionAxtivityWebwiev.DescriptionActivity;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
